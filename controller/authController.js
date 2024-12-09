@@ -16,7 +16,12 @@ const registerUser = async (req, res) => {
       return;
     }
 
+    const uniqueId = `UX-${Date.now()}${Math.floor(
+      1000000000 + Math.random() * 9000000000
+    )}`.slice(0, 15);
+
     const user = await User.create({
+      id: uniqueId,
       username,
       email,
       passwordHash,
