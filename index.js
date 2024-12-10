@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: [process.env.REACT_APP_CLIENT_URL],
+    origin: ["http://localhost:3001", process.env.REACT_APP_CLIENT_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     optionSuccessStatus: 200,
