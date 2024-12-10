@@ -7,6 +7,7 @@ const socketIo = require("socket.io");
 
 const authRouter = require("./routes/authRoutes");
 const boardRouter = require("./routes/boardRoutes");
+const messageRouter = require("./routes/messageRouter");
 const { setupSocketIO } = require("./socket/socketHandler");
 
 const app = express();
@@ -20,8 +21,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*",
-    // origin: ["http://localhost:3001"],
+    origin: [process.env.REACT_APP_CLIENT_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     optionSuccessStatus: 200,
@@ -36,10 +36,11 @@ app.use(attachIoToRequest);
 
 app.use("/api/auth", authRouter);
 app.use("/api/board", boardRouter);
+app.use("/api/messages", messageRouter);
 
 setupSocketIO(io);
 module.exports = { io };
 
 server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on ${process.env.REACT_APP_CLIENT_URL}`);
 });

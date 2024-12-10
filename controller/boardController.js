@@ -23,6 +23,7 @@ const createBoard = async (req, res) => {
         Done: [],
       },
       members: [req.user.id],
+      ownerId: req.user.id,
     });
     res.status(201).json(newBoard);
   } catch (error) {
@@ -175,6 +176,40 @@ const deleteTask = async (req, res) => {
   }
 };
 
+const removeUsersFromBoard = async (req, res) => {
+  try {
+    const { boardId } = req.params;
+    const { users } = req.body;
+
+    if (!Array.isArray(users)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid input: userIds must be an array." });
+    }
+
+    const updatedBoard = await Board.findOneAndUpdate(
+      { id: boardId },
+      {
+        $pull: { members: { $in: users } },
+      },
+      { new: true }
+    );
+
+    if (!updatedBoard) {
+      return res.status(404).json({ message: "Board not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Users removed successfully.", updatedBoard });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while removing users." });
+  }
+};
+
 module.exports = {
   createBoard,
   fetchBoard,
@@ -185,4 +220,5 @@ module.exports = {
   fetchTasksInBoard,
   updateTask,
   deleteTask,
+  removeUsersFromBoard,
 };

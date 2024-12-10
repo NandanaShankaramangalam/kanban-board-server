@@ -9,6 +9,11 @@ const BoardSchema = new mongoose.Schema({
     default: { to_do: [], in_progress: [], done: [] },
   },
   members: [{ type: String, required: true }],
+  ownerId: {
+    type: String,
+    ref: "User",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Board", BoardSchema);
