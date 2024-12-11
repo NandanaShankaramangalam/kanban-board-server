@@ -30,9 +30,9 @@ This project is a **Collaborative Kanban Board** application built to enhance ta
   - Chat messages and bot responses.
 
 How to start
-Run: git clone https://github.com/NandanaShankaramangalam/kanban-board-server.git
-CD into the folder
-Run: npm install
-Run: npm start
+1. Run: git clone https://github.com/NandanaShankaramangalam/kanban-board-server.git
+2. CD into the folder
+3. Run: npm install
+4. Run: npm start
 
 Note: Create a .env file based on .env.example and add your environment variables.
