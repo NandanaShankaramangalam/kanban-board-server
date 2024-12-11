@@ -14,19 +14,27 @@ const generateTaskId = () => {
 const createBoard = async (req, res) => {
   const { name } = req.body;
   try {
+    const existingBoard = await Board.findOne({
+      name,
+      ownerId: req?.user?.id,
+    });
+
+    if (existingBoard) {
+      return res
+        .status(400)
+        .json({ error: "A board with this name already exists." });
+    }
+
     const newBoard = await Board.create({
       id: generateBoardId(),
       name,
-      columns: {
-        "To Do": [],
-        "In Progress": [],
-        Done: [],
-      },
       members: [req.user.id],
       ownerId: req.user.id,
+      ownerName: req?.user?.username,
     });
     res.status(201).json(newBoard);
   } catch (error) {
+    console.log("error: ", error);
     res.status(500).json({ error: "Failed to create board" });
   }
 };

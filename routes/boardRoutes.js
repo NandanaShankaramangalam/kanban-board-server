@@ -14,16 +14,17 @@ const {
 } = require("../controller/boardController");
 const { protect } = require("../middlewares/authMiddleware");
 const { io } = require("../index");
+const checkBoardMembership = require("../middlewares/checkBoardMemberMiddleware");
 
 router.post("/", protect, createBoard);
 router.get("/", protect, fetchBoard);
-router.get("/:boardId/users/not-assigned", protect, fetchUsersNotInBoard);
-router.post("/add-users/:boardId", protect, addUsersToBoard);
-router.post("/remove-users/:boardId", protect, removeUsersFromBoard);
-router.get("/:boardId/users", protect, fetchUsersInBoard);
-router.post("/:boardId/add-task", protect, addTask);
-router.get("/:boardId/tasks", protect, fetchTasksInBoard);
-router.put("/:boardId/tasks/:taskId", protect, updateTask);
-router.delete("/:boardId/tasks/:taskId", protect, deleteTask);
+router.get("/:boardId/users/not-assigned", protect, checkBoardMembership, fetchUsersNotInBoard);
+router.post("/add-users/:boardId", protect, checkBoardMembership, addUsersToBoard);
+router.post("/remove-users/:boardId", protect, checkBoardMembership, removeUsersFromBoard);
+router.get("/:boardId/users", protect, checkBoardMembership, fetchUsersInBoard);
+router.post("/:boardId/add-task", protect, checkBoardMembership, addTask);
+router.get("/:boardId/tasks", protect, checkBoardMembership, fetchTasksInBoard);
+router.put("/:boardId/tasks/:taskId", protect, checkBoardMembership, updateTask);
+router.delete("/:boardId/tasks/:taskId", protect,checkBoardMembership, deleteTask);
 
 module.exports = router;

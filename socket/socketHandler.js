@@ -3,6 +3,7 @@ const Task = require("../model/taskSchema");
 
 const setupSocketIO = (io) => {
   io.on("connection", (socket) => {
+    console.log("user connected to socket...");
     socket.on("joinBoard", (boardId) => {
       console.log("socket boardId: ", boardId);
 

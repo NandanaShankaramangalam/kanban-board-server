@@ -9,10 +9,15 @@ const registerUser = async (req, res) => {
   try {
     const { username, email, password: passwordHash } = req.body;
 
-    const userExists = await User.findOne({ email });
+    const emailExists = await User.findOne({ email });
+    if (emailExists) {
+      res.status(400).json({ message: "User with this email already exists" });
+      return;
+    }
 
-    if (userExists) {
-      res.status(400).json({ message: "User already exists" });
+    const usernameExists = await User.findOne({ username });
+    if (usernameExists) {
+      res.status(400).json({ message: "Username is already taken" });
       return;
     }
 
@@ -63,7 +68,10 @@ const loginUser = async (req, res) => {
       res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({
+      message: "Something went wrong! Please try agin later.",
+      error: error.message,
+    });
   }
 };
 

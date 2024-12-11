@@ -5,9 +5,10 @@ const {
   createMessage,
   chatBotAssistance,
 } = require("../controller/messageController");
+const checkBoardMembership = require("../middlewares/checkBoardMemberMiddleware");
 const router = express.Router();
 
-router.post("/:boardId", protect, createMessage);
-router.get("/:boardId", protect, fetchMessages);
-router.post("/ai-bot/:boardId", protect, chatBotAssistance);
+router.post("/:boardId", protect, checkBoardMembership, createMessage);
+router.get("/:boardId", protect, checkBoardMembership, fetchMessages);
+router.post("/ai-bot/:boardId", protect, checkBoardMembership, chatBotAssistance);
 module.exports = router;
